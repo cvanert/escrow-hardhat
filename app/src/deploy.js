@@ -1,67 +1,55 @@
-import EscrowContracts from './artifacts/contracts/Escrow.sol/EscrowContracts';
+import { ethers } from 'ethers';
 import Escrow from './artifacts/contracts/Escrow.sol/Escrow';
-const ethers = require("ethers");
+import EscrowStorage from './artifacts/contracts/EscrowStorage.sol/EscrowStorage';
 
-let escrowContracts;
+let escrowStorage;
 
 export async function deployStorage(signer, address) {
-  console.log(signer, address);
   if (address == null) {
-    if (escrowContracts == undefined) {
-      escrowContracts = await createEscrowStorage(signer);
-      localStorage.setItem('EscrowContracts', escrowContracts.address);
-      return escrowContracts;
+    if (escrowStorage === undefined) {
+      escrowStorage = await createEscrowStorage(signer);
+      localStorage.setItem('EscrowStorage', escrowStorage.address);
+      console.log(escrowStorage);
+      return escrowStorage;
     }
   } else {
-    escrowContracts = new ethers.Contract(address, EscrowContracts.abi, signer);
-    console.log(escrowContracts);
-    return escrowContracts;
+    escrowStorage = new ethers.Contract(address, EscrowStorage.abi, signer);
+    console.log(escrowStorage);
+    return escrowStorage;
   }
-}
-
-export async function deploy(signer, arbiter, beneficiary, value) {
-  let escrow;
-  console.log(escrowContracts);
-  console.log(signer, arbiter, beneficiary, value);
-  escrow = await createEscrow(signer, arbiter, beneficiary, value);
-  getAllEscrows();
-  return escrow;
-}
-
-export async function getEscrowContracts(signer, address) {
-  escrowContracts = new ethers.Contract(address, EscrowContracts.abi, signer);
-  console.log(escrowContracts);
-  return escrowContracts;
 }
 
 async function createEscrowStorage(signer) {
   const factory = new ethers.ContractFactory(
-    EscrowContracts.abi,
-    EscrowContracts.bytecode,
+    EscrowStorage.abi,
+    EscrowStorage.bytecode,
     signer
   );
 
   return await factory.deploy();
 }
 
-async function createEscrow(signer, arbiter, beneficiary, value) {
+export async function connectToEscrowStorage(signer, address) {
+  return new ethers.Contract(address, EscrowStorage.abi, signer);
+}
+
+export async function deployEscrow(signer, arbiter, beneficiary, value) {
   const factory = new ethers.ContractFactory(
     Escrow.abi,
     Escrow.bytecode,
     signer
   );
-
-  return await factory.deploy(localStorage.getItem('EscrowContracts'), arbiter, beneficiary, { value });
+  return factory.deploy(localStorage.getItem('EscrowStorage'), arbiter, beneficiary, { value });
 }
 
 export async function connectToEscrow(signer, address) {
   return new ethers.Contract(address, Escrow.abi, signer);
 }
 
+export async function getApprovedEscrows() {
+  return await escrowStorage.viewApproved();
+}
+
 export async function getAllEscrows() {
-  try {
-    return await escrowContracts.viewEscrows();
-  } catch (e) {
-    console.log(e);
-  }
+  return await escrowStorage.viewAllEscrows();
 }
