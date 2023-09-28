@@ -4,6 +4,41 @@ body {
   font-family: 'Muli', sans-serif;
 }
 
+.contentContainer {
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: space-between;
+}
+
+.storageContractContainer {
+  margin: 20px;  
+  padding: 40px;
+  border: 1px solid #ddd;
+  background-color: #fff;  
+  justify-content: center;
+}
+
+.storageContractTitleContainer, .storageContractDescriptionContainer {
+  display: flex;
+  justify-content: center;
+}
+
+.storageContractAddressContainer {
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: baseline;
+  justify-content: center;
+
+}
+
+.storageContractAddress {
+  padding-left: 0.5rem;
+}
+
+.escrowContractContainer {
+  display: flex;
+}
+
 .contract, .existing-contracts {
   margin: 20px;
   display: inline-block;

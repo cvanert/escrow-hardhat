@@ -105,24 +105,31 @@ function App() {
 
   function DeployEscrowStorageHTML() {
     return (
-      <div
-        className="button"
-        id="deployStorage"
-        onClick={(e) => {
-          e.preventDefault();
+      <div className="storageContractAddressContainer">
+        <div
+          className="button"
+          id="deployStorage"
+          onClick={(e) => {
+            e.preventDefault();
 
-          newStorageContract();
-        }}
-      >
-        Deploy Escrow Holding Contract
+            newStorageContract();
+          }}
+        >
+          Deploy Escrow Holding Contract
+        </div>
       </div>
     )
   }
 
   function EscrowStorageDeployedHTML() {
     return (
-      <div className="storageDeployed">
-        {sessionStorage.getItem('EscrowStorage')}
+      <div className="storageContractAddressContainer">
+        <h3>Contract Address:</h3>
+        <div className="storageContractAddress">
+          <div className="storageDeployed">
+            {sessionStorage.getItem('EscrowStorage')}
+          </div>
+        </div>
       </div>
     )
   }
@@ -179,15 +186,24 @@ function App() {
 
   return (
     <>
-      <div className="storageContract">
-        <h1> Escrow Storage Contract </h1>
-        <div className="storageContractDescription">
-          Deploy contract to store future escrow contracts. Must be completed prior to deploying escrow contracts.
+      <div className="contentContainer">
+        <div className="storageContractContainer">
+          <div className="storageContract">
+            <div className="storageContractTitleContainer">
+              <h1 className="storageContractTitle"> Escrow Storage Contract </h1>
+            </div>
+            <div className="storageContractDescriptionContainer">
+              <div className="storageContractDescription">
+                Must deploy smart contract to store escrow contracts prior to deploying escrow contracts.
+              </div>
+            </div>
+            {StorageHTML()}
+          </div>
         </div>
-        {StorageHTML()}
+        <div className="escrowContractContainer">
+          {EscrowContractCreationHTML()}
+        </div>
       </div>
-
-      {EscrowContractCreationHTML()}
     </>
   );
 }
