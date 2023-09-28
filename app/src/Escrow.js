@@ -6,6 +6,7 @@ export default function Escrow({
   approved,
   handleApprove,
 }) {
+
   if (approved) {
     return (
       <div className="existing-contract">
@@ -20,9 +21,9 @@ export default function Escrow({
           </li>
           <li>
             <div> Value </div>
-            <div> {value} </div>
+            <div> {value} ETH </div>
           </li>
-          <div class="complete" id="0xCba6b9A951749B8735C603e7fFC5151849248772">
+          <div className="complete" id="0xCba6b9A951749B8735C603e7fFC5151849248772">
             ✓ It's been approved!
           </div>
         </ul>
@@ -42,7 +43,7 @@ export default function Escrow({
         </li>
         <li>
           <div> Value </div>
-          <div> {value} </div>
+          <div> {value} ETH </div>
         </li>
         <div
           className="button"

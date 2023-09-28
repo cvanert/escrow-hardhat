@@ -30,8 +30,8 @@ function App() {
 
   async function newStorageContract() {
     console.log("newStorageContract called)")
-    deployStorage(signer, localStorage.getItem('EscrowContracts')).then((res) => {
-      console.log(localStorage.getItem('EscrowContracts'));
+    deployStorage(signer, sessionStorage.getItem('EscrowContracts')).then((res) => {
+      console.log(sessionStorage.getItem('EscrowContracts'));
       window.location.reload(false);
     })
   }
@@ -47,7 +47,7 @@ function App() {
       address: escrowContract.address,
       arbiter,
       beneficiary,
-      value: value.toString(),
+      value: ethers.utils.formatEther(value),
       handleApprove: async () => {
         escrowContract.on('Approved', () => {
           document.getElementById(escrowContract.address).className =
@@ -65,7 +65,7 @@ function App() {
 
   async function setEscrowsAfterRefresh() {
     // let approved;
-    const eStorage = await connectToEscrowStorage(signer, localStorage.getItem('EscrowStorage'));
+    const eStorage = await connectToEscrowStorage(signer, sessionStorage.getItem('EscrowStorage'));
     const approved = await eStorage.viewApproved();
     const allEscrows = await eStorage.viewAllEscrows();
     console.log(approved);
@@ -77,7 +77,7 @@ function App() {
         arbiter: esc.arbiter,
         beneficiary: esc.beneficiary,
         depositor: esc.depositor,
-        value: esc.amount.toString(),
+        value: ethers.utils.formatEther(esc.amount),
         approved: approved.findIndex(a => {
           return a.toLowerCase() === esc.contractAddress.toLowerCase()}) !== -1,
         handleApprove: async () => {
@@ -97,7 +97,7 @@ function App() {
   }
 
   function StorageHTML() {
-    if (localStorage.getItem('EscrowStorage') === null) {
+    if (sessionStorage.getItem('EscrowStorage') === null) {
       return DeployEscrowStorageHTML();
     } else {
       return EscrowStorageDeployedHTML();
@@ -123,7 +123,7 @@ function App() {
   function EscrowStorageDeployedHTML() {
     return (
       <div className="storageDeployed">
-        {localStorage.getItem('EscrowStorage')}
+        {sessionStorage.getItem('EscrowStorage')}
       </div>
     )
   }

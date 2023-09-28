@@ -8,7 +8,7 @@ export async function deployStorage(signer, address) {
   if (address == null) {
     if (escrowStorage === undefined) {
       escrowStorage = await createEscrowStorage(signer);
-      localStorage.setItem('EscrowStorage', escrowStorage.address);
+      sessionStorage.setItem('EscrowStorage', escrowStorage.address);
       console.log(escrowStorage);
       return escrowStorage;
     }
@@ -39,7 +39,7 @@ export async function deployEscrow(signer, arbiter, beneficiary, value) {
     Escrow.bytecode,
     signer
   );
-  return factory.deploy(localStorage.getItem('EscrowStorage'), arbiter, beneficiary, { value });
+  return factory.deploy(sessionStorage.getItem('EscrowStorage'), arbiter, beneficiary, { value });
 }
 
 export async function connectToEscrow(signer, address) {
