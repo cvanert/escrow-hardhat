@@ -29,11 +29,10 @@ function App() {
   }, [account]);
 
   async function newStorageContract() {
-    console.log("newStorageContract called)")
     deployStorage(signer, sessionStorage.getItem('EscrowContracts')).then((res) => {
-      console.log(sessionStorage.getItem('EscrowContracts'));
+      console.log(res);
       window.location.reload(false);
-    })
+    });
   }
 
   async function newContract() {
@@ -71,7 +70,7 @@ function App() {
     console.log(approved);
     console.log(allEscrows);
 
-    setEscrows(() => 
+    setEscrows(() =>
       allEscrows.map(esc => ({
         address: esc.contractAddress,
         arbiter: esc.arbiter,
@@ -79,11 +78,11 @@ function App() {
         depositor: esc.depositor,
         value: ethers.utils.formatEther(esc.amount),
         approved: approved.findIndex(a => {
-          return a.toLowerCase() === esc.contractAddress.toLowerCase()}) !== -1,
+          return a.toLowerCase() === esc.contractAddress.toLowerCase()
+        }) !== -1,
         handleApprove: async () => {
           const escrowContract = await connectToEscrow(signer, esc.contractAddress);
           escrowContract.on('Approved', () => {
-            console.log(`WTF`);
             document.getElementById(esc.contractAddress).className =
               'complete';
             document.getElementById(esc.contractAddress).innerText =
@@ -128,6 +127,56 @@ function App() {
     )
   }
 
+  function EscrowContractCreationHTML() {
+    if (sessionStorage.getItem('EscrowStorage') !== null) {
+      return (
+        <>
+          <div className="contract">
+            <h1> New Contract </h1>
+            <label>
+              Arbiter Address
+              <input type="text" id="arbiter" />
+            </label>
+
+            <label>
+              Beneficiary Address
+              <input type="text" id="beneficiary" />
+            </label>
+
+            <label>
+              Deposit Amount (in ETH)
+              <input type="text" id="eth" />
+            </label>
+
+            <div
+              className="button"
+              id="deploy"
+              onClick={(e) => {
+                e.preventDefault();
+                newContract();
+                document.getElementById('arbiter').value = "";
+                document.getElementById('beneficiary').value = "";
+                document.getElementById('eth').value = ""
+              }}
+            >
+              Deploy
+            </div>
+          </div>
+
+          <div className="existing-contracts">
+            <h1> Existing Contracts </h1>
+
+            <div id="container">
+              {escrows.map((escrow) => {
+                return <Escrow key={escrow.address} {...escrow} />;
+              })}
+            </div>
+          </div>
+        </>
+      )
+    };
+  }
+
   return (
     <>
       <div className="storageContract">
@@ -138,47 +187,7 @@ function App() {
         {StorageHTML()}
       </div>
 
-      <div className="contract">
-        <h1> New Contract </h1>
-        <label>
-          Arbiter Address
-          <input type="text" id="arbiter" />
-        </label>
-
-        <label>
-          Beneficiary Address
-          <input type="text" id="beneficiary" />
-        </label>
-
-        <label>
-          Deposit Amount (in ETH)
-          <input type="text" id="eth" />
-        </label>
-
-        <div
-          className="button"
-          id="deploy"
-          onClick={(e) => {
-            e.preventDefault();
-            newContract();
-            document.getElementById('arbiter').value = "";
-            document.getElementById('beneficiary').value = "";
-            document.getElementById('eth').value = ""
-          }}
-        >
-          Deploy
-        </div>
-      </div>
-
-      <div className="existing-contracts">
-        <h1> Existing Contracts </h1>
-
-        <div id="container">
-          {escrows.map((escrow) => {
-            return <Escrow key={escrow.address} {...escrow} />;
-          })}
-        </div>
-      </div>
+      {EscrowContractCreationHTML()}
     </>
   );
 }
