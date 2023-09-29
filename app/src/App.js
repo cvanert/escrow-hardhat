@@ -63,7 +63,6 @@ function App() {
   }
 
   async function setEscrowsAfterRefresh() {
-    // let approved;
     const eStorage = await connectToEscrowStorage(signer, sessionStorage.getItem('EscrowStorage'));
     const approved = await eStorage.viewApproved();
     const allEscrows = await eStorage.viewAllEscrows();

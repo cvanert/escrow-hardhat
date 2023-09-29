@@ -30,7 +30,9 @@ async function createEscrowStorage(signer) {
 }
 
 export async function connectToEscrowStorage(signer, address) {
-  return new ethers.Contract(address, EscrowStorage.abi, signer);
+  if (address !== null) {
+    return new ethers.Contract(address, EscrowStorage.abi, signer);
+  }
 }
 
 export async function deployEscrow(signer, arbiter, beneficiary, value) {
