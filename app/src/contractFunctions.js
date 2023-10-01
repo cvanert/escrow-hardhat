@@ -2,7 +2,7 @@ import { ethers } from 'ethers';
 import Escrow from './artifacts/contracts/Escrow.sol/Escrow';
 import EscrowStorage from './artifacts/contracts/EscrowStorage.sol/EscrowStorage';
 
-const storageAddress = '0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512';
+const storageAddress = '0x76251D7d4DA2C62A9428B647a28D19636E4A96BF';
 let escrowStorage;
 
 export async function deployStorage(signer, address) {
