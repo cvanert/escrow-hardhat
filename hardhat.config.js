@@ -6,10 +6,10 @@ module.exports = {
   paths: {
     artifacts: "./app/src/artifacts",
   },
-  // networks: {
-  //   sepolia: {
-  //     url: process.env.SEPOLIA_URL,
-  //     accounts: [process.env.PRIVATE_KEY]
-  //   },
-  // }
+  networks: {
+    sepolia: {
+      url: process.env.SEPOLIA_URL,
+      accounts: [process.env.PRIVATE_KEY]
+    },
+  }
 };

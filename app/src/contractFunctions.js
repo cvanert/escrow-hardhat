@@ -2,21 +2,29 @@ import { ethers } from 'ethers';
 import Escrow from './artifacts/contracts/Escrow.sol/Escrow';
 import EscrowStorage from './artifacts/contracts/EscrowStorage.sol/EscrowStorage';
 
+const storageAddress = '0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512';
 let escrowStorage;
 
 export async function deployStorage(signer, address) {
-  if (address == null) {
-    if (escrowStorage === undefined) {
-      escrowStorage = await createEscrowStorage(signer);
-      sessionStorage.setItem('EscrowStorage', escrowStorage.address);
-      console.log(escrowStorage);
-      return escrowStorage;
-    }
-  } else {
-    escrowStorage = new ethers.Contract(address, EscrowStorage.abi, signer);
-    console.log(escrowStorage);
-    return escrowStorage;
-  }
+  // if (address == null) {
+  //   if (escrowStorage === undefined) {
+  //     escrowStorage = await createEscrowStorage(signer);
+  //     sessionStorage.setItem('EscrowStorage', escrowStorage.address);
+  //     console.log(escrowStorage);
+  //     return escrowStorage;
+  //   }
+  // } else {
+  //   escrowStorage = new ethers.Contract(address, EscrowStorage.abi, signer);
+  //   console.log(escrowStorage);
+  //   return escrowStorage;
+  // }
+  sessionStorage.setItem('EscrowStorage', storageAddress);
+  escrowStorage = new ethers.Contract(
+    storageAddress,
+    EscrowStorage.abi,
+    signer
+  );
+  return escrowStorage;
 }
 
 async function createEscrowStorage(signer) {

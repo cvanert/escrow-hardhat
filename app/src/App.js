@@ -1,6 +1,6 @@
 import { ethers } from 'ethers';
 import { useEffect, useState } from 'react';
-import { connectToEscrow, connectToEscrowStorage, deployStorage, deployEscrow, getAllEscrows, getApprovedEscrows } from './deploy';
+import { connectToEscrow, connectToEscrowStorage, deployStorage, deployEscrow } from './contractFunctions';
 import Escrow from './Escrow';
 
 const provider = new ethers.providers.Web3Provider(window.ethereum);
